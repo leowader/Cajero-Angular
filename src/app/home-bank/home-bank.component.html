@@ -1,0 +1,275 @@
+<div class="flex flex-col p-4 rounded-lg">
+  <div class="flex justify-between">
+    <div class="flex gap-2">
+      <div
+        class="P-2 h-10 w-10 rounded-full bg-white bg-opacity-30 flex justify-center items-center"
+      >
+        L
+      </div>
+
+      <div class="flex justify-center items-center text-sm">
+        Hola leo Bienvenido!!
+      </div>
+    </div>
+    <div
+      class="flex cursor-pointer hover:text-[#5439DF] justify-center items-center"
+      (click)="volver()"
+    >
+      @if(op==="Home") { Salir<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-logout"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path
+          d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+        />
+        <path d="M9 12h12l-3 -3" />
+        <path d="M18 15l3 -3" />
+      </svg>
+      }@else {
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back-up"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M9 14l-4 -4l4 -4" />
+        <path d="M5 10h11a4 4 0 1 1 0 8h-1" />
+      </svg>
+      }
+    </div>
+  </div>
+
+  <div class="flex gap-4 items-center p-2">
+    <div class="flex text-xl">
+      @if (op === "Retirar") { Cantidad a retirar $
+      {{ cantidad.toLocaleString() }}
+
+      }@else { @if (op==="Home") { Elige tu Operacion }@else { @if
+      (op==="Consultar") {Numero de cuenta <br />{{ numCuenta }}} } }
+    </div>
+    @if (verInput===true && op==="Retirar") {
+
+    <input
+      type="number"
+      class="text-sm rounded-lg w-36 p-2 bg-black bg-opacity-30 outline-none"
+      placeholder="Cantidad de retiro"
+      (input)="capturarValor($event)"
+      required
+    />
+    }
+  </div>
+  @if (op==="Retirar") {
+
+  <div class="flex mt-2">
+    <div class="flex-col gap-2">
+      <div class="flex gap-2 w-[550px] flex-wrap justify-center items-center">
+        <div
+          class="rounded-lg w-56 flex justify-center items-center flex-col p-2 hover:bg-white hover:bg-opacity-5 cursor-pointer bg-black bg-opacity-30"
+          *ngFor="let op of valorRetiro"
+          (click)="handleCantidad(op.toString())"
+        >
+          <div class="text-[#08C33F] text-opacity-70">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="70"
+              height="70"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-coin"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+              <path
+                d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1"
+              />
+              <path d="M12 7v10" />
+            </svg>
+          </div>
+
+          <span class="font-bold">{{ op.toLocaleString() + " COP" }} </span>
+        </div>
+      </div>
+      <div class="flex justify-center mt-2">
+        <button
+          type="button"
+          class="w-[450px] bg-black bg-opacity-30 p-2 rounded-lg hover:bg-white hover:bg-opacity-5"
+          (click)="cargar()"
+        >
+          Confirmar Retiro
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap">
+      <div
+        *ngFor="let bille of billeteEntrega"
+        class="flex rotate-90 mt-7 h-14 rounded-lg"
+      >
+        <img class="w-28" src="{{ bille.img }}" alt="" />
+      </div>
+    </div>
+  </div>
+  }@if(op==="Home") {
+  <div class="flex gap-2 mt-2 w-[650px] flex-wrap justify-center items-center">
+    <div
+      class="rounded-lg w-56 flex justify-center items-center flex-col p-2 hover:bg-white hover:bg-opacity-5 cursor-pointer bg-black bg-opacity-30"
+      *ngFor="let op of opciones"
+      (click)="handleOp(op.name)"
+    >
+      <img class="w-[70px]" src="{{ op.img }}" alt="" />
+      <span class="font-bold">{{ op.name }} </span>
+    </div>
+  </div>
+  } @if (op==="Consultar") {
+
+  <div class="bg-white bg-opacity-10 w-96 rounded-lg p-4">
+    <div class="flex justify-center items-center gap-2">
+      Disponible
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#08C33F"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-eye-dollar"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+        <path
+          d="M13.193 17.924c-.39 .05 -.788 .076 -1.193 .076c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.005 0 5.592 1.394 7.761 4.181"
+        />
+        <path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+        <path d="M19 21v1m0 -8v1" />
+      </svg>
+    </div>
+    <div class="flex gap-2 justify-center items-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="54"
+        height="54"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#08C33F"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-currency-dollar"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path
+          d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
+        />
+        <path d="M12 3v3m0 12v3" />
+      </svg>
+      <div class="flex items-center text-[54px]">
+        {{ saldo.toLocaleString() }}
+      </div>
+    </div>
+  </div>
+  } @if (op==="Transferir") {
+
+  <div class="flex flex-col gap-y-2">
+    <div class="text-xl">Envia plata</div>
+    <div>
+      <input
+        type="number"
+        placeholder="Numero de cuenta"
+        class="p-2 w-96 rounded-lg bg-white bg-opacity-25 outline-none"
+      />
+    </div>
+    <div>
+      <span>Revisa bien el numero para enviarle a la persona correcta</span>
+    </div>
+    <div>
+      <input
+        type="number"
+        placeholder="¿Cuanto?"
+        (input)="handleEnviar($event)"
+        class="p-2 rounded-lg w-96 bg-white bg-opacity-25 outline-none"
+      />
+    </div>
+    <div>
+      <textarea
+        id="message"
+        rows="4"
+        class="block p-2 w-full rounded-lg outline-none"
+        placeholder="Mensaje"
+      ></textarea>
+    </div>
+    <button
+      type="button"
+      (click)="enviarTransferencia()"
+      class="bg-[#08C33F] p-2 rounded-lg hover:bg-[#bg-opacity-50] hover:bg-opacity-60"
+    >
+      Enviar
+    </button>
+  </div>
+  } @if (op==="Depositar") {
+
+  <div class="flex flex-col gap-y-2">
+    <div class="text-xl">Deposita plata</div>
+    <div>
+      <input
+        type="text"
+        placeholder="Numero de cuenta"
+        class="p-2 w-96 rounded-lg bg-white bg-opacity-25 outline-none"
+      />
+    </div>
+    <div>
+      <span>Revisa bien el numero antes de hacer el deposito</span>
+    </div>
+    <div>
+      <input
+        type="text"
+        placeholder="¿Cuanto?"
+        (input)="handleDepositar($event)"
+        class="p-2 rounded-lg w-96 bg-white bg-opacity-25 outline-none"
+      />
+    </div>
+    <div>
+      <textarea
+        id="message"
+        rows="4"
+        class="block p-2 w-full rounded-lg outline-none"
+        placeholder="Mensaje"
+      ></textarea>
+    </div>
+    <button
+      type="button"
+      (click)="depositarDinero()"
+      class="bg-[#08C33F] p-2 rounded-lg hover:bg-[#bg-opacity-50] hover:bg-opacity-60"
+    >
+      Enviar
+    </button>
+  </div>
+  }
+</div>
+<!-- <input
+  type="text"
+  class="rounded-lg p-2 outline-none"
+  (input)="capturarValor($event)"
+/> -->
